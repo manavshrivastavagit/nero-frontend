@@ -24,7 +24,7 @@
         <div class="col-md-8">
             <div class="chat_window">
                 <div class="top_menu">
-                    <div class="title" id="title">Chat Tittle</div>
+                    <div class="title" id="title">Nero</div>
                 </div>
                 <ul class="messages"></ul>
                 <div class="bottom_wrapper clearfix">
@@ -40,7 +40,7 @@
             </div>
             <div class="message_template">
                 <li class="message">
-                    <div class="avatar f_avatar"></div>
+                    <div class="avatar m_avatar"></div>
                     <div class="text_wrapper">
                         <div class="text"></div>
                         <div class="timestamp"></div>
@@ -50,7 +50,7 @@
             <br />
             <br />
         </div>
-        <div class="col-md-4">
+       <!--- <div class="col-md-4">
             <div class="chat_window" style="background-color: white">
                 <div class="top_menu">
                     <div class="title">Help</div>
@@ -104,13 +104,34 @@
                 <div style="margin-left: 20px"><a href="/button_link" class="btn btn-info custom-button-width .navbar-right logout" role="button">Button</a></div>
             </div>
         </div>
-    </div>
+    </div> -->
 </body>
 
 <footer>
   <script type="text/javascript">
     $( document ).ready(function() {
         console.log( "ready!" );
+         $('.message_input').val('');
+         $('.message_input').focus();
+        showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
+        $('.send_message').click(function(){
+              
+             var msg = $('.message_input').val();
+             showUserMessage(msg, getCurrentTimestamp());
+             // alert(msg);
+            // alert("The paragraph was clicked.");
+            $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg +"&firstname=manav&lastname=shrivastava", function(data, status){
+                // alert("Data: " + data + "\nStatus: " + status);
+                // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
+              
+                var res = data.replace("#emp_name", "manav");
+                 showBotMessage(res,getCurrentTimestamp());
+                 $('.message_input').val('');
+                 $('.message_input').focus();
+               
+            });
+           
+        });
     });
   </script>
       <script src="static/js/main.js"></script>
