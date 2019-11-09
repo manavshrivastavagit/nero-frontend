@@ -151,9 +151,9 @@
                 });
             } else {
                     // if loggedIn
-                    console.log("loggedIn firstname="+fullname[0]+"&lastname="+fullname[1])
+                    console.log("loggedIn firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname"))
                    
-                    $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg + "&firstname="+fullname[0]+"&lastname="+fullname[1] , function(data, status){
+                    $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg + "&firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname") , function(data, status){
                         // alert("Data: " + data + "\nStatus: " + status);
                         // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
                     
