@@ -113,7 +113,8 @@
         console.log( "ready!" );
          $('.message_input').val('');
          $('.message_input').focus();
-        showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
+         var welcomeMsg = "Hi Manav Shrivastava ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
+        showUserMessage(welcomeMsg,getCurrentTimestamp());
         $('.send_message').click(function(){
               
              var msg = $('.message_input').val();
