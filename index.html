@@ -49,6 +49,16 @@
             </div>
             <br />
             <br />
+            <div class="loading_message_template">
+                <li class="message">
+                    <div class="avatar m_avatar"></div>
+                    <div class="text_wrapper_loading">
+                        <div class="text_loading"></div>
+                    </div>
+                </li>
+            </div>
+            <br />
+            <br />
         </div>
        <!--- <div class="col-md-4">
             <div class="chat_window" style="background-color: white">
@@ -111,19 +121,15 @@
   <script type="text/javascript">
     $( document ).ready(function() {
         console.log( "ready!" );
-         $('.message_input').val('');
-         $('.message_input').focus();
-         
-         var welcomeMsg = "";
-         if(!localStorage.getItem("firstname")){
-             welcomeMsg = "Hi! This is NERO, your personal digital assistant for anything and everything related to Enquero"
-              showUserMessage(welcomeMsg,getCurrentTimestamp());
-          AskFNameLNameMsg = "Please provide your First-name and Last-name\n example: Ajit Verma"
-          showUserMessage(AskFNameLNameMsg,getCurrentTimestamp());
-         } else {
-            welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
-          showUserMessage(welcomeMsg,getCurrentTimestamp());
-         }
+        showWelcomeMessage();
+        // if enter pressed
+        $(document).on('keypress',function(e) {
+            if(e.which == 13) {
+               // alert('You pressed enter!');
+                 console.log( "'You pressed enter!'!" );
+                 $('.send_message').click();
+            }
+        });
          
         $('.send_message').click(function(){
               var msg = $('.message_input').val();
@@ -133,16 +139,20 @@
               // if not loggedIn
              if(!localStorage.getItem("firstname")){
                  console.log("not loggedIn")
+                 showUserMessage(msg,getCurrentTimestamp());
+                 //showLoading();
                 $.get("https://nero-enquero.herokuapp.com/validuser?firstname="+fullname[0]+"&lastname="+fullname[1], function(data, status){
                 // alert("Data: " + data + "\nStatus: " + status);
                 if(data.result){
                      localStorage.setItem("firstname", fullname[0]);
                      localStorage.setItem("lastname", fullname[1]);
                       welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
-                    showUserMessage(welcomeMsg,getCurrentTimestamp());
+                   // hideLoading();
+                    showBotMessage(welcomeMsg,getCurrentTimestamp());
                 } else {
                     // not found user in db
-                      console.log("not loggedIn not found user in db")
+                      console.log("not loggedIn not found user in db");
+                       //hideLoading();
                     showBotMessage(data,getCurrentTimestamp());
                 }
                  $('.message_input').val('');
@@ -152,23 +162,41 @@
             } else {
                     // if loggedIn
                     console.log("loggedIn firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname"))
-                   
+                     showUserMessage(msg,getCurrentTimestamp());
+                    
                     $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg + "&firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname") , function(data, status){
                         // alert("Data: " + data + "\nStatus: " + status);
                         // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
                     
-                        var res = data.replace("#emp_name", "manav");
+                        var res = data.replace("#emp_name", localStorage.getItem("firstname"));
+                         //hideLoading();
                         showBotMessage(res,getCurrentTimestamp());
                         $('.message_input').val('');
                         $('.message_input').focus();
+                         // if user says bye, logout session
+                        if(msg === "bye"){
+                            const delay = ms => new Promise(res => setTimeout(res, ms));
+                            console.log(" logged out");
+                            const logoutFunction = async () => {
+                                await delay(3000);
+                                console.log("Waited 3s");
+                                showWelcomeMessage();
+                            };
+                            logoutFunction();
+                            localStorage.clear();
+                            
+                        }
                     
                     });
+                    
+                    
             }
            
             
            
         });
     });
+    
   </script>
       <script src="static/js/main.js"></script>
 </footer>

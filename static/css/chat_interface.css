@@ -80,8 +80,15 @@ body {
   float: left;
   height: 40px;
   width: 40px;
-  background: url('../img/bot.jpg');
+  background: url('../img/nero.png');
   background-size: 40px;
+}
+.messages .message.left .avatar_loading {
+  float: left;
+  /* height: 40px; */
+  width: 90px; 
+  background: url('../img/loading-1.gif');
+  background-size: 90px;
 }
 .messages .message.left .text_wrapper {
   background-color: #f3eeca;
@@ -104,7 +111,7 @@ body {
   float: left;
   height: 40px;
   width: 40px;
-  background: url('../img/bot.jpg');
+  background: url('../img/nero.png');
   background-size: 40px;
 }
 .messages .message.push .text_wrapper {
@@ -135,7 +142,7 @@ body {
   float: right;
   height: 40px;
   width: 40px;
-  background: url('../img/guy.jpg');
+  background: url('../img/woman.jpg');
   background-size: 40px;
 }
 
