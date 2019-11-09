@@ -97,12 +97,12 @@ function showWelcomeMessage(){
 function showLoading(){
 	var options = {month: 'short', day: 'numeric', hour:'numeric', minute: 'numeric'  };
 				console.log("in showLoadingMessage");
-				MessageLoading = new MessageLoading({
+				MessageLoading1 = new MessageLoading({
 						text: 'loading...',
 						time: getCurrentTimestamp().toLocaleString("en-IN", options),
 						message_side: 'left'
 				});
-				MessageLoading.draw();
+				MessageLoading1.draw();
 				$messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
 }
 

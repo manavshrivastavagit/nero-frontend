@@ -140,19 +140,19 @@
              if(!localStorage.getItem("firstname")){
                  console.log("not loggedIn")
                  showUserMessage(msg,getCurrentTimestamp());
-                 //showLoading();
+                 showLoading();
                 $.get("https://nero-enquero.herokuapp.com/validuser?firstname="+fullname[0]+"&lastname="+fullname[1], function(data, status){
                 // alert("Data: " + data + "\nStatus: " + status);
                 if(data.result){
                      localStorage.setItem("firstname", fullname[0]);
                      localStorage.setItem("lastname", fullname[1]);
                       welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
-                   // hideLoading();
+                    hideLoading();
                     showBotMessage(welcomeMsg,getCurrentTimestamp());
                 } else {
                     // not found user in db
                       console.log("not loggedIn not found user in db");
-                       //hideLoading();
+                       hideLoading();
                     showBotMessage(data,getCurrentTimestamp());
                 }
                  $('.message_input').val('');
@@ -163,13 +163,13 @@
                     // if loggedIn
                     console.log("loggedIn firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname"))
                      showUserMessage(msg,getCurrentTimestamp());
-                    
+                     showLoading();
                     $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg + "&firstname="+localStorage.getItem("firstname")+"&lastname="+localStorage.getItem("lastname") , function(data, status){
                         // alert("Data: " + data + "\nStatus: " + status);
                         // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
                     
                         var res = data.replace("#emp_name", localStorage.getItem("firstname"));
-                         //hideLoading();
+                         hideLoading();
                         showBotMessage(res,getCurrentTimestamp());
                         $('.message_input').val('');
                         $('.message_input').focus();
