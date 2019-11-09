@@ -113,24 +113,59 @@
         console.log( "ready!" );
          $('.message_input').val('');
          $('.message_input').focus();
-         var welcomeMsg = "Hi Manav Shrivastava ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
-        showUserMessage(welcomeMsg,getCurrentTimestamp());
+         
+         var welcomeMsg = "";
+         if(!localStorage.getItem("firstname")){
+             welcomeMsg = "Hi! This is NERO, your personal digital assistant for anything and everything related to Enquero"
+              showUserMessage(welcomeMsg,getCurrentTimestamp());
+          AskFNameLNameMsg = "Please provide your First-name and Last-name\n example: Ajit Verma"
+          showUserMessage(AskFNameLNameMsg,getCurrentTimestamp());
+         } else {
+            welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
+          showUserMessage(welcomeMsg,getCurrentTimestamp());
+         }
+         
         $('.send_message').click(function(){
-              
-             var msg = $('.message_input').val();
-             showUserMessage(msg, getCurrentTimestamp());
-             // alert(msg);
-            // alert("The paragraph was clicked.");
-            $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg +"&firstname=manav&lastname=shrivastava", function(data, status){
+              var msg = $('.message_input').val();
+              // showUserMessage(msg, getCurrentTimestamp());
+              var fullname = msg.split(' ');
+              // alert(fullname);
+              // if not loggedIn
+             if(!localStorage.getItem("firstname")){
+                 console.log("not loggedIn")
+                $.get("https://nero-enquero.herokuapp.com/validuser?firstname="+fullname[0]+"&lastname="+fullname[1], function(data, status){
                 // alert("Data: " + data + "\nStatus: " + status);
-                // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
-              
-                var res = data.replace("#emp_name", "manav");
-                 showBotMessage(res,getCurrentTimestamp());
+                if(data.result){
+                     localStorage.setItem("firstname", fullname[0]);
+                     localStorage.setItem("lastname", fullname[1]);
+                      welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
+                    showUserMessage(welcomeMsg,getCurrentTimestamp());
+                } else {
+                    // not found user in db
+                      console.log("not loggedIn not found user in db")
+                    showBotMessage(data,getCurrentTimestamp());
+                }
                  $('.message_input').val('');
                  $('.message_input').focus();
                
-            });
+                });
+            } else {
+                    // if loggedIn
+                    console.log("loggedIn firstname="+fullname[0]+"&lastname="+fullname[1])
+                   
+                    $.get("https://nero-enquero.herokuapp.com/api/v1/ask-nero?query="+ msg + "&firstname="+fullname[0]+"&lastname="+fullname[1] , function(data, status){
+                        // alert("Data: " + data + "\nStatus: " + status);
+                        // showUserMessage("Hi Manav, I am Nero, What can i do for you?",getCurrentTimestamp());
+                    
+                        var res = data.replace("#emp_name", "manav");
+                        showBotMessage(res,getCurrentTimestamp());
+                        $('.message_input').val('');
+                        $('.message_input').focus();
+                    
+                    });
+            }
+           
+            
            
         });
     });
