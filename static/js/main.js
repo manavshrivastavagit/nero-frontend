@@ -90,13 +90,13 @@ function showWelcomeMessage(){
           showBotMessage(AskFNameLNameMsg,getCurrentTimestamp());
          } else {
             welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
-          showBotMessage(welcomeMsg,getCurrentTimestamp());
-		 }
-		 // show hint btn
-		  // Used like so
-			var quicklinksArray = ['<div class="quicklink">my reporting manager</div>', '<div class="quicklink">can you tell me my practice lead ?</div>',
-			'<div class="quicklink">Largest account in enquero</div>', '<div class="quicklink">what is my business unit ?</div>',
-			'<div class="quicklink">Tell me something about Enquero</div>',  '<div class="quicklink">Tell me something about Enquero</div>',
+		  showBotMessage(welcomeMsg,getCurrentTimestamp());
+		  // show quicklinks
+			var quicklinksArray = ['<div class="quicklink">my reporting manager</div>',
+			 '<div class="quicklink">can you tell me my practice lead ?</div>',
+			'<div class="quicklink">who is CEO of enquero ?</div>', 
+			'<div class="quicklink">what is my business unit ?</div>',
+			'<div class="quicklink">Tell me something about Enquero</div>', 
 			'<div class="quicklink">my date of joining</div>'
 		];
 		quicklinksArray = shuffle(quicklinksArray);
@@ -108,6 +108,8 @@ function showWelcomeMessage(){
 			//console.log('shuffledLinks: '+ shuffledLinks);
 		 var quicklinks = '<div class="quicklinks">' + shuffledLinks + '</div>';
 		 $('.messages').append(quicklinks);
+		 }
+		 
 }
 
 function shuffle(array) {
