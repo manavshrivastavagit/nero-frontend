@@ -155,21 +155,29 @@
                       welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
                     hideLoading();
                     showBotMessage(welcomeMsg,getCurrentTimestamp());
-                    // show quicklinks
-                        var quicklinksArray = ['<div class="quicklink">my reporting manager</div>', '<div class="quicklink">can you tell me my practice lead ?</div>',
-                        '<div class="quicklink">Largest account in enquero</div>', '<div class="quicklink">what is my business unit ?</div>',
-                        '<div class="quicklink">Tell me something about Enquero</div>',  '<div class="quicklink">Tell me something about Enquero</div>',
+                        // show quicklinks
+                         quicklinksArray = ['<div class="quicklink">my reporting manager</div>',
+                        '<div class="quicklink">can you tell me my practice lead ?</div>',
+                        '<div class="quicklink">who is CEO of enquero ?</div>', 
+                        '<div class="quicklink">what is my business unit ?</div>',
+                        '<div class="quicklink">Tell me something about Enquero</div>', 
                         '<div class="quicklink">my date of joining</div>'
                     ];
                     quicklinksArray = shuffle(quicklinksArray);
                         //console.log(quicklinksArray);
-                        var shuffledLinks='';
+                         shuffledLinks='';
                         quicklinksArray.forEach(link => {
                             shuffledLinks += link;
                         });
                         //console.log('shuffledLinks: '+ shuffledLinks);
-                    var quicklinks = '<div class="quicklinks">' + shuffledLinks + '</div>';
+                     quicklinks = '<div class="quicklinks">' + shuffledLinks + '</div>';
                     $('.messages').append(quicklinks);
+                    $('.quicklink').on("click", (function(){
+                        var msg = $(this).text();
+                        $('.message_input').val(msg);
+                            console.log( "'You pressed quick link!'!" );
+                            $('.send_message').click();
+                    }));
                 } else {
                     // not found user in db
                       console.log("not loggedIn not found user in db");
@@ -301,6 +309,12 @@
          });
 
          // handle quick link 
+           $('.quicklink_1').on("click", (function(){
+              var msg = $(this).text();
+               $('.message_input').val(msg);
+                console.log( "'You pressed quick link!'!" );
+                 $('.send_message').click();
+           }));
            $('.quicklink').on("click", (function(){
               var msg = $(this).text();
                $('.message_input').val(msg);

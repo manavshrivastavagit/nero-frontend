@@ -369,6 +369,17 @@ body {
   border-radius: 10px;
   float: right;
 }
+.quicklink_1{
+  border: aliceblue;
+  background-color: bisque;
+  color: black;
+  width: fit-content;
+  padding: 9px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+  float: right;
+}
 .quicklinks{
   margin-right: 18px;
 }
