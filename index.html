@@ -120,6 +120,7 @@
 
 <footer>
   <script type="text/javascript">
+ 
     $( document ).ready(function() {
         console.log( "ready!" );
         showWelcomeMessage();
@@ -137,6 +138,7 @@
               if(msg.length < 2){
                   return true;
               }
+
               // showUserMessage(msg, getCurrentTimestamp());
               var fullname = msg.split(' ');
               // alert(fullname);
@@ -175,6 +177,7 @@
                         var res = data.replace("#emp_name", localStorage.getItem("firstname"));
                          hideLoading();
                         showBotMessage(res,getCurrentTimestamp());
+                        showHintMsg = false;
                         $('.message_input').val('');
                         $('.message_input').focus();
                          // if user says bye, logout session
@@ -205,7 +208,7 @@
             
            
             
-             console.log("voice started");
+             //console.log("voice started");
             window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
             let finalTranscript = '';
             let recognition = new window.SpeechRecognition();
@@ -213,7 +216,7 @@
             recognition.maxAlternatives = 10;
             recognition.continuous = true;
             recognition.onresult = (event) => {
-                 console.log("voice started")
+                // console.log("voice started")
             let interimTranscript = '';
             for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
                 let transcript = event.results[i][0].transcript;
@@ -223,7 +226,7 @@
                 interimTranscript += transcript;
                 }
             }
-                console.log("voice end: " + finalTranscript);
+                //console.log("voice end: " + finalTranscript);
      
                 if($('#mic').hasClass('mic_active')) {
                     $('.message_input').val(interimTranscript);
@@ -245,7 +248,7 @@
                     }
 
                     function myStopFunction() {
-                        console.log("clearTimeout " );
+                        //console.log("clearTimeout " );
                       clearTimeout(timer3s);
                     }
 
@@ -258,22 +261,22 @@
             }
 
             recognition.onaudioend = function() {
-                console.log('Audio capturing ended');
+                //console.log('Audio capturing ended');
                  //$('.send_message').click();
                
              }
              recognition.onspeechend = function() {
                 recognition.stop();
-                console.log('Speech recognition has stopped.');
+                //console.log('Speech recognition has stopped.');
             }
              if($('#mic').hasClass('mic')) {
-                 console.log('mic hasClass(mic)');
+                 //console.log('mic hasClass(mic)');
                 recognition.start();
                 $('#mic').addClass('circle');
                 $('#mic').addClass('mic_active');
                 $('#mic').removeClass('mic');
              } else {
-                console.log('mic not hasClass(mic)');
+                //console.log('mic not hasClass(mic)');
                 recognition.abort();
                 $('#mic').removeClass('circle');
                 $('#mic').removeClass('mic_active');
@@ -281,6 +284,15 @@
              }
            
          });
+
+         // handle quick link 
+           $('.quicklink').click(function(){
+              var msg = $(this).text();
+               $('.message_input').val(msg);
+                console.log( "'You pressed quick link!'!" );
+                 $('.send_message').click();
+           });
+
     });
     
   </script>

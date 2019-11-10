@@ -79,7 +79,7 @@ function showBotMessage(msg,d){
 }
 
 function showWelcomeMessage(){
-	 $('.message_input').val('');
+	     $('.message_input').val('');
          $('.message_input').focus();
          
          var welcomeMsg = "";
@@ -91,8 +91,45 @@ function showWelcomeMessage(){
          } else {
             welcomeMsg = "Hi " + localStorage.getItem("firstname")+ " " + localStorage.getItem("lastname") + " ! My name is NERO and I'm a Chatbot. I can help you with Enquero related queries. Please select a quick link below or type your question in the space provided."
           showBotMessage(welcomeMsg,getCurrentTimestamp());
-         }
+		 }
+		 // show hint btn
+		  // Used like so
+			var quicklinksArray = ['<div class="quicklink">my reporting manager</div>', '<div class="quicklink">can you tell me my practice lead ?</div>',
+			'<div class="quicklink">Largest account in enquero</div>', '<div class="quicklink">what is my business unit ?</div>',
+			'<div class="quicklink">Tell me something about Enquero</div>',  '<div class="quicklink">Tell me something about Enquero</div>',
+			'<div class="quicklink">my date of joining</div>'
+		];
+		quicklinksArray = shuffle(quicklinksArray);
+			//console.log(quicklinksArray);
+			var shuffledLinks='';
+			quicklinksArray.forEach(link => {
+				shuffledLinks += link;
+			});
+			//console.log('shuffledLinks: '+ shuffledLinks);
+		 var quicklinks = '<div class="quicklinks">' + shuffledLinks + '</div>';
+		 $('.messages').append(quicklinks);
 }
+
+function shuffle(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+  
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+  
+	  // Pick a remaining element...
+	  randomIndex = Math.floor(Math.random() * currentIndex);
+	  currentIndex -= 1;
+  
+	  // And swap it with the current element.
+	  temporaryValue = array[currentIndex];
+	  array[currentIndex] = array[randomIndex];
+	  array[randomIndex] = temporaryValue;
+	}
+  
+	return array;
+  }
+  
+ 
 
 function showLoading(){
 	var options = {month: 'short', day: 'numeric', hour:'numeric', minute: 'numeric'  };
