@@ -31,12 +31,13 @@
                     <div class="message_input_wrapper">
                         <input id="msg_input" class="message_input" placeholder="Say Hi to begin chat..." />
                     </div>
+                    <div id="mic" class="mic" ></div>
                     <div class="send_message">
                         <div class="icon">
                             <div class="text" style="color:black">Send</div>
                         </div>
                     </div>
-                    
+                      
                 </div>
             </div>
             <div class="message_template">
@@ -60,7 +61,7 @@
             
         </div>
        
-       <!--- <div class="col-md-4">
+       <!-- <div class="col-md-4">
             <div class="chat_window" style="background-color: white">
                 <div class="top_menu">
                     <div class="title">Help</div>
@@ -113,7 +114,7 @@
                 </div>
                 <div style="margin-left: 20px"><a href="/button_link" class="btn btn-info custom-button-width .navbar-right logout" role="button">Button</a></div>
             </div>
-        </div> -->
+        </div> --> 
     </div> 
 </body>
 
@@ -133,6 +134,9 @@
          
         $('.send_message').click(function(){
               var msg = $('.message_input').val();
+              if(msg.length < 2){
+                  return true;
+              }
               // showUserMessage(msg, getCurrentTimestamp());
               var fullname = msg.split(' ');
               // alert(fullname);
@@ -195,6 +199,88 @@
             
            
         });
+        // speech input
+         $('#mic').click(function(){
+             // alert("on");
+            
+           
+            
+             console.log("voice started");
+            window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+            let finalTranscript = '';
+            let recognition = new window.SpeechRecognition();
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 10;
+            recognition.continuous = true;
+            recognition.onresult = (event) => {
+                 console.log("voice started")
+            let interimTranscript = '';
+            for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+                let transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+                } else {
+                interimTranscript += transcript;
+                }
+            }
+                console.log("voice end: " + finalTranscript);
+     
+                if($('#mic').hasClass('mic_active')) {
+                    $('.message_input').val(interimTranscript);
+                    $('.message_input').val(finalTranscript);
+
+                    var timer3s;
+
+                    function myFunction() {
+                        timer3s = setTimeout(function(){ 
+                            // alert("Hello");
+                            $('.send_message').click(); 
+                            myStopFunction();
+                            if($('#mic').hasClass('mic_active')) {
+                                $('#mic').removeClass('circle');
+                                $('#mic').removeClass('mic_active');
+                                $('#mic').addClass('mic');
+                            }
+                        }, 3000);
+                    }
+
+                    function myStopFunction() {
+                        console.log("clearTimeout " );
+                      clearTimeout(timer3s);
+                    }
+
+                    myFunction();
+                }
+
+                   
+
+                
+            }
+
+            recognition.onaudioend = function() {
+                console.log('Audio capturing ended');
+                 //$('.send_message').click();
+               
+             }
+             recognition.onspeechend = function() {
+                recognition.stop();
+                console.log('Speech recognition has stopped.');
+            }
+             if($('#mic').hasClass('mic')) {
+                 console.log('mic hasClass(mic)');
+                recognition.start();
+                $('#mic').addClass('circle');
+                $('#mic').addClass('mic_active');
+                $('#mic').removeClass('mic');
+             } else {
+                console.log('mic not hasClass(mic)');
+                recognition.abort();
+                $('#mic').removeClass('circle');
+                $('#mic').removeClass('mic_active');
+                $('#mic').addClass('mic');
+             }
+           
+         });
     });
     
   </script>
